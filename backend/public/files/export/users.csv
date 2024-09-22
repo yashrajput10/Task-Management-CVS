@@ -1,2 +1,3 @@
 FirstName,LastName,Email,Phone,Gender,Status,Profile,Location,DateCreated,DateUpdated
-abcd,ef,abcd@gmail.com,1225356545,Male,Active,image-1726874866136.user.png,Surat,Sat Sep 21 2024 04:57:46 GMT+0530 (India Standard Time),Sat Sep 21 2024 04:58:26 GMT+0530 (India Standard Time)
+abcd,ef,abcd@gmail.com,1225356545,Male,InActive,image-1726874866136.user.png,Surat,Sat Sep 21 2024 04:57:46 GMT+0530 (India Standard Time),Sat Sep 21 2024 04:58:26 GMT+0530 (India Standard Time)
+yash,r,yddb@gmail.com,1234567891,Male,Active,image-1726951749340.user2.jpeg.png,Surat,Sun Sep 22 2024 02:19:10 GMT+0530 (India Standard Time),-

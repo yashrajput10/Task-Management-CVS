@@ -7,8 +7,8 @@ import Spiner from "../../components/Spiner/Spiner"
 import { useNavigate } from "react-router-dom"
 import { addData , dltdata, updateData} from '../../components/context/ContextProvider';
 import {usergetfunc,deletfunc,exporttocsvfunc} from "../../services/Apis";
-import Alert from 'react-bootstrap/Alert';
-import "./home.css"
+
+
 import { toast } from 'react-toastify';
 
 
@@ -91,139 +91,76 @@ const Home = () => {
 
   return (
     <>
-    {
-      useradd ?  <Alert variant="success" onClose={() => setUseradd("")} dismissible>{useradd.fname.toUpperCase()} Succesfully Added</Alert>:""
-    }
+      <div className="container mt-5">
+  <div className="d-flex justify-content-between mb-3">
+    <Button variant="primary" onClick={adduser}>
+      <i className="fa-solid fa-plus"></i>&nbsp; Add User
+    </Button>
+    <Button className="btn btn-success" onClick={exportuser}>Export To Csv</Button>
+  </div>
+  
+  <div className="row mb-4">
+    <div className="col-lg-4 col-md-6 mb-3">
+      <Form className="d-flex">
+        <Form.Control
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Button variant="success">Search</Button>
+      </Form>
+      
+    </div>
+  </div>
 
-    {
-      update ? <Alert variant="primary" onClose={() => setUpdate("")} dismissible>{update.fname.toUpperCase()} Succesfully Update</Alert>:""
-    }
+  <div className="row mb-4">
+    <div className="col-lg-3 col-md-4">
+      <h4>Filter By Gender</h4>
+      <Form.Check type="radio" label="All" name="gender" value="All" onChange={(e) => setGender(e.target.value)} defaultChecked />
+      <Form.Check type="radio" label="Male" name="gender" value="Male" onChange={(e) => setGender(e.target.value)} />
+      <Form.Check type="radio" label="Female" name="gender" value="Female" onChange={(e) => setGender(e.target.value)} />
+    </div>
 
-    {
-      deletedata ? <Alert variant="danger" onClose={() => setDLtdata("")} dismissible>{deletedata.fname.toUpperCase()} Succesfully Delete</Alert>:""
-    }
+    <div className="col-lg-3 col-md-4">
+      <h4>Sort By</h4>
+      <Dropdown>
+        <Dropdown.Toggle variant="secondary">
+          <i className="fa-solid fa-sort"></i> Sort
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Item onClick={() => setSort("new")}>Newest</Dropdown.Item>
+          <Dropdown.Item onClick={() => setSort("old")}>Oldest</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </div>
 
-      <div className="container">
-        <div className="main_div">
-          <div className='d-flex mt-3'>
-          <div className="add_btn p-2">
-              <Button variant="primary" onClick={adduser}> <i class="fa-solid fa-plus"></i>&nbsp; Add User</Button>
-            </div>
-            <div className="export_csv p-2">
-              <Button className='export_btn' onClick={exportuser}>Export To Csv</Button>
-            </div>
-          </div>
-          {/* search add btn */}
-          <div className="search_add mt-4 d-flex justify-content-between">
-         
-            <div className="search col-lg-4">
-              <Form className="d-flex">
-                <Form.Control
-                  type="search"
-                  placeholder="Search"
-                  className="me-2"
-                  aria-label="Search"
-                  onChange={(e)=>setSearch(e.target.value)}
-                />
-                <Button variant="success" className='search_btn'>Search</Button>
-              </Form>
-            </div>
-            
-          </div>
-          {/* export,gender,status */}
+    <div className="col-lg-3 col-md-4">
+      <h4>Filter By Status</h4>
+      <Form.Check type="radio" label="All" name="status" value="All" onChange={(e) => setStatus(e.target.value)} defaultChecked />
+      <Form.Check type="radio" label="Active" name="status" value="Active" onChange={(e) => setStatus(e.target.value)} />
+      <Form.Check type="radio" label="Inactive" name="status" value="Inactive" onChange={(e) => setStatus(e.target.value)} />
+    </div>
+  </div>
 
-          <div className="filter_div mt-5 d-flex justify-content-between flex-wrap">
-            
-            <div className="filter_gender">
-              <div className="filter">
-                <h4>Filter By Gender</h4>
-                <div className="gender d-flex justify-content-between">
-                  <Form.Check
-                    type={"radio"}
-                    label={`All`}
-                    name="gender"
-                    value={"All"}
-                    onChange={(e)=>setGender(e.target.value)}
-                    defaultChecked
-                  />
-                  <Form.Check
-                    type={"radio"}
-                    label={`Male`}
-                    name="gender"
-                    value={"Male"}
-                    onChange={(e)=>setGender(e.target.value)}
-                  />
-                  <Form.Check
-                    type={"radio"}
-                    label={`Female`}
-                    name="gender"
-                    value={"Female"}
-                    onChange={(e)=>setGender(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
+  {showspin ? (
+    <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+      <Spiner />
+    </div>
+  ) : (
+    <Tables
+      userdata={userdata}
+      deleteUser={deleteUser}
+      userGet={userGet}
+      handlePrevious={handlePrevious}
+      handleNext={handleNext}
+      page={page}
+      pageCount={pageCount}
+      setPage={setPage}
+    />
+  )}
+</div>
 
-            {/* short by value */}
-            <div className="filter_newold">
-              <h4>Short By Value</h4>
-              <Dropdown className='text-center'>
-                <Dropdown.Toggle className='dropdown_btn' id="dropdown-basic">
-                  <i class="fa-solid fa-sort"></i>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={()=>setSort("new")}>New</Dropdown.Item>
-                  <Dropdown.Item onClick={()=>setSort("old")}>Old</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-
-            {/* filter by status */}
-            <div className="filter_status">
-              <div className="status">
-                <h4>Filter By Status</h4>
-                <div className="status_radio d-flex justify-content-between flex-wrap">
-                  <Form.Check
-                    type={"radio"}
-                    label={`All`}
-                    name="status"
-                    value={"All"}
-                    onChange={(e)=>setStatus(e.target.value)}
-                    defaultChecked
-                  />
-                  <Form.Check
-                    type={"radio"}
-                    label={`Active`}
-                    name="status"
-                    value={"Active"}
-                    onChange={(e)=>setStatus(e.target.value)}
-                  />
-                  <Form.Check
-                    type={"radio"}
-                    label={`InActive`}
-                    name="status"
-                    value={"InActive"}
-                    onChange={(e)=>setStatus(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {
-          showspin ? <Spiner /> : <Tables
-                                    userdata={userdata}
-                                    deleteUser={deleteUser}
-                                    userGet={userGet}
-                                    handlePrevious={handlePrevious}
-                                    handleNext={handleNext}
-                                    page={page}
-                                    pageCount={pageCount}
-                                    setPage={setPage}
-                                  />
-        }
-
-      </div>
     </>
   )
 }
